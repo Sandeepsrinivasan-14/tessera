@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Patient Records</title>
+  <meta name="description" content="Admissions, departments and billing at a glance, with a searchable patient directory.">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/theme.js"></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#directory">Skip to the patient directory</a>
+
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="/" aria-label="Patient Records home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect class="m-fill" x="3" y="3" width="12" height="12" rx="3.5"/>
+          <rect class="m-ring" x="18" y="4" width="10" height="10" rx="3"/>
+          <rect class="m-ring" x="4" y="18" width="10" height="10" rx="3"/>
+          <rect class="m-fill" x="17" y="17" width="12" height="12" rx="3.5"/>
+        </svg>
+        <span class="brand-name">Patient Records</span>
+      </a>
+      <div class="top-actions">
+        <span id="source" class="source" hidden></span>
+        <a class="quiet-link" href="/docs">API docs</a>
+        <button id="theme" class="icon-btn" type="button" aria-label="Switch colour theme">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-sun" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/><path class="i-moon" d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <noscript>
+      <p class="banner">This dashboard needs JavaScript. The data is still available through the <a href="/docs">API</a>.</p>
+    </noscript>
+
+    <div id="banner" class="banner" role="alert" hidden></div>
+
+    <section class="hero" aria-labelledby="headline">
+      <h1 id="headline" class="headline" aria-live="polite">Loading patient records</h1>
+      <p id="subline" class="subline"></p>
+
+      <div id="census" class="census" aria-label="Every patient, grouped by department"></div>
+
+      <ul class="legend" aria-label="How to read the census">
+        <li><span class="key key-admitted" aria-hidden="true"></span>Admitted</li>
+        <li><span class="key key-discharged" aria-hidden="true"></span>Discharged</li>
+        <li><span class="key key-bill" aria-hidden="true"></span>Highest bill</li>
+        <li><span class="key key-stay" aria-hidden="true"></span>Longest stay</li>
+      </ul>
+    </section>
+
+    <section class="records" aria-label="Notable records">
+      <button id="note-bill" class="record" type="button" disabled>
+        <span class="record-mark mark-bill" aria-hidden="true"></span>
+        <span class="record-body">
+          <span class="record-label">Highest bill</span>
+          <span class="record-value" data-slot="value">&nbsp;</span>
+          <span class="record-detail" data-slot="detail">&nbsp;</span>
+        </span>
+      </button>
+      <button id="note-stay" class="record" type="button" disabled>
+        <span class="record-mark mark-stay" aria-hidden="true"></span>
+        <span class="record-body">
+          <span class="record-label">Longest stay</span>
+          <span class="record-value" data-slot="value">&nbsp;</span>
+          <span class="record-detail" data-slot="detail">&nbsp;</span>
+        </span>
+      </button>
+    </section>
+
+    <section class="block" aria-labelledby="dept-title">
+      <div class="block-head">
+        <h2 id="dept-title">Departments</h2>
+        <p class="block-note">Select a department to filter the directory below.</p>
+      </div>
+      <div id="ledger" class="ledger"></div>
+    </section>
+
+    <section id="directory" class="block" aria-labelledby="dir-title" tabindex="-1">
+      <div class="block-head">
+        <h2 id="dir-title">Patient directory</h2>
+        <p id="dir-count" class="block-note" aria-live="polite"></p>
+      </div>
+
+      <form id="filters" class="filters" role="search" autocomplete="off">
+        <label class="field field-search">
+          <span class="field-label">Search by name</span>
+          <input id="q" name="q" type="search" placeholder="For example, Meera" spellcheck="false">
+        </label>
+        <label class="field">
+          <span class="field-label">Department</span>
+          <select id="department" name="department"><option value="">All departments</option></select>
+        </label>
+        <div class="field segmented" role="radiogroup" aria-labelledby="status-label">
+          <span id="status-label" class="field-label">Status</span>
+          <div class="seg-row">
+            <label><input type="radio" name="status" value="" checked><span>All</span></label>
+            <label><input type="radio" name="status" value="Admitted"><span>Admitted</span></label>
+            <label><input type="radio" name="status" value="Discharged"><span>Discharged</span></label>
+          </div>
+        </div>
+      </form>
+
+      <div class="table-wrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th scope="col" data-sort="id" aria-sort="ascending"><button type="button">ID</button></th>
+              <th scope="col" data-sort="name"><button type="button">Name</button></th>
+              <th scope="col" data-sort="department"><button type="button">Department</button></th>
+              <th scope="col">Doctor</th>
+              <th scope="col" data-sort="age" class="num"><button type="button">Age</button></th>
+              <th scope="col" data-sort="daysAdmitted" class="num"><button type="button">Days</button></th>
+              <th scope="col" data-sort="totalBill" class="num"><button type="button">Billed</button></th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div id="empty" class="empty" hidden>
+        <p>No patients match these filters.</p>
+        <button id="clear" class="btn" type="button">Clear filters</button>
+      </div>
+
+      <nav class="pager" aria-label="Directory pages">
+        <span id="range" class="range"></span>
+        <div class="pager-btns">
+          <button id="prev" class="btn" type="button">Previous</button>
+          <button id="next" class="btn" type="button">Next</button>
+        </div>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Patient Records <span id="version"></span></p>
+  </footer>
+
+  <div id="scrim" class="scrim" hidden></div>
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <div class="drawer-head">
+      <div>
+        <h2 id="drawer-title" class="drawer-title"></h2>
+        <p id="drawer-sub" class="drawer-sub"></p>
+      </div>
+      <button id="drawer-close" class="icon-btn" type="button" aria-label="Close patient details">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+
+  <div id="tip" class="tip" role="tooltip" hidden></div>
+</body>
+</html>

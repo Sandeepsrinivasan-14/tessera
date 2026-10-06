@@ -51,7 +51,7 @@ version = { attr = "patient_api.__version__" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-patient_api = ["py.typed"]
+patient_api = ["py.typed", "static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

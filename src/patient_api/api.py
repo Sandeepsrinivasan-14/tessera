@@ -6,9 +6,12 @@ import logging
 import time
 import uuid
 from collections.abc import Awaitable, Callable
+from pathlib import Path
+from typing import Annotated, Literal
 
 from fastapi import Depends, FastAPI, Query, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from . import __version__, analytics
 from .config import Settings
@@ -27,6 +30,7 @@ from .models import (
     ErrorResponse,
     HighestBill,
     LongestStay,
+    Meta,
     Page,
     Patient,
     PatientSummary,
@@ -35,6 +39,14 @@ from .repository import PatientRepository, build_repository
 from .validation import parse_patient_id, require_department
 
 logger = logging.getLogger("patient_api.http")
+
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+#: The dashboard loads only its own scripts and styles; nothing from third parties.
+_UI_CSP = (
+    "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; "
+    "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+)
 
 #: Exception type -> HTTP status. First ``isinstance`` match wins.
 _STATUS_FOR: tuple[tuple[type[PatientAPIError], int], ...] = (
@@ -90,6 +102,7 @@ def create_app(
         started = time.perf_counter()
         response = await call_next(request)
         elapsed_ms = (time.perf_counter() - started) * 1000
+        response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Request-ID"] = request_id
         response.headers["X-Process-Time-ms"] = f"{elapsed_ms:.2f}"
         logger.info(
@@ -115,6 +128,28 @@ def create_app(
     def health() -> dict[str, str]:
         return {"status": "ok", "version": __version__}
 
+    @app.get("/meta", response_model=Meta, tags=["meta"], summary="Version and data source")
+    def meta(request: Request) -> Meta:
+        repo = request.app.state.repository
+        if repo is not None:
+            source = repo.source
+        else:
+            source = "file" if request.app.state.settings.data_file else "remote"
+        return Meta(version=__version__, source=source)
+
+    # -------------------------------------------------------------- dashboard
+
+    if STATIC_DIR.is_dir():
+        app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
+        @app.get("/", include_in_schema=False)
+        def dashboard() -> FileResponse:
+            return FileResponse(
+                STATIC_DIR / "index.html",
+                media_type="text/html",
+                headers={"Content-Security-Policy": _UI_CSP, "Cache-Control": "no-cache"},
+            )
+
     # -------------------------------------------------------------- patients
     # NOTE: fixed-path routes must be declared before "/patients/{patient_id}".
 
@@ -124,6 +159,8 @@ def create_app(
         department: str | None = Query(None, description="Case-insensitive department filter"),
         status: str | None = Query(None, description="Admitted or Discharged"),
         q: str | None = Query(None, description="Case-insensitive name substring"),
+        sort: Annotated[analytics.SortField, Query(description="Field to sort by")] = "id",
+        order: Annotated[Literal["asc", "desc"], Query()] = "asc",
         limit: int = Query(50, ge=1, le=200),
         offset: int = Query(0, ge=0),
     ) -> Page:
@@ -137,6 +174,7 @@ def create_app(
         if q:
             needle = q.strip().lower()
             patients = [p for p in patients if needle in p.name.lower()]
+        patients = analytics.sort_patients(patients, sort, descending=order == "desc")
         return Page(
             total=len(patients),
             limit=limit,

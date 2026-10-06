@@ -104,5 +104,13 @@ class Page(BaseModel):
     items: list[Patient]
 
 
+class Meta(BaseModel):
+    """Describes the running service. Never contains credentials."""
+
+    version: str
+    #: Where patients are read from: ``file``, ``remote`` or ``memory``.
+    source: str
+
+
 class ErrorResponse(BaseModel):
     message: str

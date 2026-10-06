@@ -10,8 +10,9 @@ admission summary and the longest-stay lookup, so those two use it deliberately.
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from functools import reduce
+from typing import Any, Literal
 
 from .exceptions import EmptyDatasetError, PatientNotFoundError
 from .models import (
@@ -22,6 +23,24 @@ from .models import (
     Patient,
     PatientSummary,
 )
+
+SortField = Literal["id", "name", "department", "age", "daysAdmitted", "totalBill"]
+
+_SORT_KEYS: dict[str, Callable[[Patient], Any]] = {
+    "id": lambda p: p.id,
+    "name": lambda p: p.name.lower(),
+    "department": lambda p: p.department.lower(),
+    "age": lambda p: p.age,
+    "daysAdmitted": lambda p: p.days_admitted,
+    "totalBill": lambda p: p.bill.total,
+}
+
+
+def sort_patients(
+    patients: Sequence[Patient], field: SortField = "id", descending: bool = False
+) -> list[Patient]:
+    """Return a new list sorted by ``field``. The sort is stable, so ties keep dataset order."""
+    return sorted(patients, key=_SORT_KEYS[field], reverse=descending)
 
 
 def find_patient(patients: Sequence[Patient], patient_id: int) -> Patient:
