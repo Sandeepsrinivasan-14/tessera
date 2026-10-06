@@ -7,10 +7,10 @@ import pytest
 import requests
 import responses
 
-from patient_api.client import PatientClient, parse_patients
-from patient_api.config import Settings
-from patient_api.exceptions import AuthenticationError, ConfigurationError, DatasetError
-from patient_api.repository import (
+from tessera.client import PatientClient, parse_patients
+from tessera.config import Settings
+from tessera.exceptions import AuthenticationError, ConfigurationError, DatasetError
+from tessera.repository import (
     FileRepository,
     InMemoryRepository,
     RemoteRepository,

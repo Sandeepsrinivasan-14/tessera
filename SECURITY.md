@@ -10,7 +10,7 @@
   value remains in Git history.
 - Secret scanning runs automatically: **Gitleaks** in CI (`.github/workflows/secret-scan.yml`) and as a
   pre-commit hook. Install the hook with `pre-commit install`.
-- `patientctl doctor` reports whether secrets are set without printing them, so it is safe to share its output.
+- `tessera doctor` reports whether secrets are set without printing them, so it is safe to share its output.
 
 ## Dashboard
 

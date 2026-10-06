@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-from patient_api.api import create_app
-from patient_api.config import Settings
-from patient_api.exceptions import AuthenticationError, DatasetError
-from patient_api.repository import InMemoryRepository
+from tessera.api import create_app
+from tessera.config import Settings
+from tessera.exceptions import AuthenticationError, DatasetError
+from tessera.repository import InMemoryRepository
 
 
 class _FailingRepo:

@@ -38,7 +38,7 @@ from .models import (
 from .repository import PatientRepository, build_repository
 from .validation import parse_patient_id, require_department
 
-logger = logging.getLogger("patient_api.http")
+logger = logging.getLogger("tessera.http")
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 
@@ -74,7 +74,7 @@ def create_app(
     from ``settings`` / the environment.
     """
     app = FastAPI(
-        title="Patient Records API",
+        title="Tessera",
         version=__version__,
         description=(
             "Token-authenticated hospital patient data, exposed with search, "

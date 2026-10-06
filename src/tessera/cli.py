@@ -1,11 +1,11 @@
-"""Command-line interface: ``patientctl``.
+"""Command-line interface: ``tessera``.
 
 Examples::
 
-    patientctl --data-file data/sample_patients.json summary
-    patientctl departments --format table
-    patientctl get 201
-    patientctl serve --port 8000
+    tessera --data-file data/sample_patients.json summary
+    tessera departments --format table
+    tessera get 201
+    tessera serve --port 8000
 """
 
 from __future__ import annotations
@@ -55,7 +55,7 @@ def _add_common_options(parser: argparse.ArgumentParser, *, is_root: bool) -> No
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="patientctl",
+        prog="tessera",
         description="Query hospital patient data from the command line.",
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -169,7 +169,7 @@ def _serve(args: argparse.Namespace, settings: Settings) -> None:
 
     if args.reload:
         uvicorn.run(
-            "patient_api.api:create_app", factory=True, host=args.host, port=args.port, reload=True
+            "tessera.api:create_app", factory=True, host=args.host, port=args.port, reload=True
         )
         return
     from .api import create_app

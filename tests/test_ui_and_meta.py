@@ -6,9 +6,9 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from patient_api.api import STATIC_DIR, create_app
-from patient_api.config import Settings
-from patient_api.repository import InMemoryRepository
+from tessera.api import STATIC_DIR, create_app
+from tessera.config import Settings
+from tessera.repository import InMemoryRepository
 
 ASSETS = ["app.js", "styles.css", "theme.js", "favicon.svg"]
 
@@ -21,7 +21,7 @@ class TestDashboard:
         csp = response.headers["content-security-policy"]
         assert "script-src 'self'" in csp
         assert "frame-ancestors 'none'" in csp
-        assert "Patient Records" in response.text
+        assert "Tessera" in response.text
 
     @pytest.mark.parametrize("name", ASSETS)
     def test_assets_are_served(self, client: TestClient, name: str) -> None:
@@ -127,7 +127,7 @@ class TestSorting:
         assert [p["age"] for p in body["items"]] == [60, 40]
 
     def test_ties_keep_dataset_order(self) -> None:
-        from patient_api import analytics
+        from tessera import analytics
 
         from .conftest import make_patient
 

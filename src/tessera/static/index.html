@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>Patient Records</title>
+  <title>Tessera: patient census</title>
   <meta name="description" content="Admissions, departments and billing at a glance, with a searchable patient directory.">
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/styles.css">
@@ -16,14 +16,15 @@
 
   <header class="top">
     <div class="top-inner">
-      <a class="brand" href="/" aria-label="Patient Records home">
+      <a class="brand" href="/" aria-label="Tessera home" title="A tessera is one tile in a mosaic. Here, every tile is a patient.">
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
           <rect class="m-fill" x="3" y="3" width="12" height="12" rx="3.5"/>
           <rect class="m-ring" x="18" y="4" width="10" height="10" rx="3"/>
           <rect class="m-ring" x="4" y="18" width="10" height="10" rx="3"/>
           <rect class="m-fill" x="17" y="17" width="12" height="12" rx="3.5"/>
         </svg>
-        <span class="brand-name">Patient Records</span>
+        <span class="brand-name">Tessera</span>
+        <span class="brand-tag">Patient census</span>
       </a>
       <div class="top-actions">
         <span id="source" class="source" hidden></span>
@@ -43,7 +44,7 @@
     <div id="banner" class="banner" role="alert" hidden></div>
 
     <section class="hero" aria-labelledby="headline">
-      <h1 id="headline" class="headline" aria-live="polite">Loading patient records</h1>
+      <h1 id="headline" class="headline" aria-live="polite">Loading the census</h1>
       <p id="subline" class="subline"></p>
 
       <div id="census" class="census" aria-label="Every patient, grouped by department"></div>
@@ -142,7 +143,8 @@
   </main>
 
   <footer class="foot">
-    <p>Patient Records <span id="version"></span></p>
+    <p class="foot-name"><strong>Tessera</strong> <span id="version"></span></p>
+    <p class="foot-note">A tessera is one tile in a mosaic. Here, each tile is a patient, and the picture is the whole ward.</p>
   </footer>
 
   <div id="scrim" class="scrim" hidden></div>

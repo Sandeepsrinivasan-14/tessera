@@ -1,4 +1,4 @@
-"""Allow ``python -m patient_api``."""
+"""Allow ``python -m tessera``."""
 
 from .cli import main
 

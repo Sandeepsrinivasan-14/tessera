@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from patient_api.cli import main
-from patient_api.config import Settings, read_dotenv
+from tessera.cli import main
+from tessera.config import Settings, read_dotenv
 
 SECRET = "s3cr3t-value-must-never-be-printed"
 

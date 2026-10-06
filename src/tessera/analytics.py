@@ -1,4 +1,4 @@
-"""Pure analytics over lists of :class:`~patient_api.models.Patient`.
+"""Pure analytics over lists of :class:`~tessera.models.Patient`.
 
 Every function here is side-effect free: it never mutates its input and never touches the
 network, which keeps the business rules trivially unit-testable.

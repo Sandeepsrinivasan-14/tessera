@@ -1,4 +1,4 @@
-"""Exception hierarchy for the patient_api package.
+"""Exception hierarchy for the tessera package.
 
 Every error the library raises on purpose derives from :class:`PatientAPIError`,
 so callers can catch one type at the boundary (the HTTP layer and the CLI both do).

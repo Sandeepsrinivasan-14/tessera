@@ -26,13 +26,13 @@ typecheck:  ## Strict type-check with mypy
 check: lint typecheck test  ## Everything CI runs
 
 serve:  ## Run the API locally against the sample data
-	PATIENT_API_DATA_FILE=data/sample_patients.json patientctl serve --reload
+	PATIENT_API_DATA_FILE=data/sample_patients.json tessera serve --reload
 
 data:  ## Regenerate the synthetic sample dataset
 	$(PY) scripts/generate_sample_data.py > data/sample_patients.json
 
 docker:  ## Build the container image
-	docker build -t patient-api .
+	docker build -t tessera .
 
 clean:  ## Remove build and cache artefacts
 	rm -rf build dist *.egg-info .pytest_cache .mypy_cache .ruff_cache .coverage htmlcov

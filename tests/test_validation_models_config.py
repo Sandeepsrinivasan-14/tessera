@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from patient_api.config import DEFAULT_BASE_URL, Settings
-from patient_api.exceptions import ConfigurationError, ValidationError
-from patient_api.models import Bill, Patient
-from patient_api.validation import parse_patient_id, require_department
+from tessera.config import DEFAULT_BASE_URL, Settings
+from tessera.exceptions import ConfigurationError, ValidationError
+from tessera.models import Bill, Patient
+from tessera.validation import parse_patient_id, require_department
 
 
 class TestParsePatientId:

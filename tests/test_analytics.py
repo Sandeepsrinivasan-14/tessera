@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from patient_api import analytics
-from patient_api.exceptions import EmptyDatasetError, PatientNotFoundError
-from patient_api.models import Patient
+from tessera import analytics
+from tessera.exceptions import EmptyDatasetError, PatientNotFoundError
+from tessera.models import Patient
 
 from .conftest import make_patient
 

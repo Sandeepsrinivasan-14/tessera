@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from patient_api import __version__
-from patient_api.cli import _render_table, main
+from tessera import __version__
+from tessera.cli import _render_table, main
 
 
 @pytest.fixture(autouse=True)
@@ -121,5 +121,5 @@ def test_serve_reload_uses_factory_import_string(monkeypatch: pytest.MonkeyPatch
     captured: dict[str, object] = {}
     monkeypatch.setattr(uvicorn, "run", lambda app, **kw: captured.update(app=app, **kw))
     assert main(["serve", "--reload"]) == 0
-    assert captured["app"] == "patient_api.api:create_app"
+    assert captured["app"] == "tessera.api:create_app"
     assert captured["factory"] is True

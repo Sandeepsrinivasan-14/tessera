@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   Patient Records dashboard
+   Tessera dashboard
    Cool gauze background, deep teal ink, one data language:
    filled = admitted, hollow = discharged, rose marks = records.
    ------------------------------------------------------------------ */
@@ -194,8 +194,29 @@ a {
   stroke-width: 2.4;
 }
 .brand-name {
-  font: 600 1.15rem/1 var(--serif);
-  letter-spacing: 0.005em;
+  font: 600 1.35rem/1 var(--serif);
+  letter-spacing: 0.01em;
+}
+.brand-tag {
+  padding-left: 12px;
+  margin-left: 2px;
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+}
+@media (max-width: 560px) {
+  .brand-tag {
+    display: none;
+  }
+}
+.foot-name {
+  margin: 0 0 4px;
+}
+.foot-note {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--muted);
 }
 .top-actions {
   display: flex;

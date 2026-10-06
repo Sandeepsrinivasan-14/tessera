@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for taking a look! This is a small project, so the process is light.
+Thanks for taking a look at Tessera! This is a small project, so the process is light.
 
 ## Setup
 
@@ -23,7 +23,7 @@ make check            # ruff + mypy --strict + pytest, the same as CI
 
 ## Working on the dashboard
 
-The UI is plain files in `src/patient_api/static/`; there is nothing to build. Run `make serve` and
+The UI is plain files in `src/tessera/static/`; there is nothing to build. Run `make serve` and
 open <http://127.0.0.1:8000/>. Keep to the rules the tests enforce: no inline scripts or styles, no
 third-party requests, and never `innerHTML` (use `textContent`). Check light and dark themes, keyboard
 use, and a narrow (phone-width) window before opening a PR.
@@ -32,7 +32,7 @@ use, and a narrow (phone-width) window before opening a PR.
 
 1. Add a pure function and response model (`analytics.py`, `models.py`) with unit tests.
 2. Expose it in `api.py` (declare fixed paths *before* `/patients/{patient_id}`) and, if useful,
-   as a `patientctl` subcommand in `cli.py`.
+   as a `tessera` subcommand in `cli.py`.
 3. Add API tests in `tests/test_api.py` covering success and error cases.
 4. Update the endpoint table in `README.md` and add a line to `CHANGELOG.md`.
 

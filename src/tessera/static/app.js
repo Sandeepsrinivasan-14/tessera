@@ -1,4 +1,4 @@
-/* Patient Records dashboard.
+/* Tessera dashboard.
  *
  * Plain JavaScript, no build step and no third-party requests. Every piece of text from the
  * API is inserted with textContent / createTextNode, never innerHTML.

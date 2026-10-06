@@ -25,7 +25,7 @@ analytics can be tested with plain Python lists.
 
 ## Dashboard
 
-The dashboard (`src/patient_api/static/`) is a thin client of the public API; it has no private
+The dashboard (`src/tessera/static/`) is a thin client of the public API; it has no private
 endpoints. It fetches `/meta`, `/patients/admission/summary`, `/patients/highest-bill`,
 `/patients/longest-stay`, `/analytics/departments` and `/patients`, so anything it can show, an
 API consumer can also get.

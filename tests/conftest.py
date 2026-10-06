@@ -5,9 +5,9 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from patient_api.api import create_app
-from patient_api.models import Patient
-from patient_api.repository import InMemoryRepository
+from tessera.api import create_app
+from tessera.models import Patient
+from tessera.repository import InMemoryRepository
 
 SAMPLE_FILE = Path(__file__).resolve().parents[1] / "data" / "sample_patients.json"
 

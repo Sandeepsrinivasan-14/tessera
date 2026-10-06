@@ -1,4 +1,11 @@
-# 🏥 Patient Records
+<p align="center">
+  <img src="docs/screenshots/banner.png" alt="Tessera: one tile per patient, the whole ward at a glance" width="100%">
+</p>
+
+# Tessera
+
+**A patient census you can read at a glance.** Tessera turns hospital patient records into a
+dashboard, a documented REST API and a CLI, all built on one tested analytics core.
 
 [![CI](https://github.com/Sandeepsrinivasan-14/pcp-5-CA-1-REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/Sandeepsrinivasan-14/pcp-5-CA-1-REPO/actions/workflows/ci.yml)
 [![Secret scan](https://github.com/Sandeepsrinivasan-14/pcp-5-CA-1-REPO/actions/workflows/secret-scan.yml/badge.svg)](https://github.com/Sandeepsrinivasan-14/pcp-5-CA-1-REPO/actions/workflows/secret-scan.yml)
@@ -6,18 +13,18 @@
 ![Typed](https://img.shields.io/badge/typing-mypy%20strict-informational)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-A hospital patient data service with a **web dashboard**, a documented **REST API** (FastAPI), a
-**CLI**, and a resilient client for a token-protected upstream server, all built around one tested core.
 
-![Dashboard in light theme](docs/screenshots/dashboard-light.png)
+> **Why "Tessera"?** A *tessera* is a single tile in a mosaic. In Tessera every patient is one tile,
+> and the picture they make together is the ward: who is admitted, who has gone home, which
+> department is busiest, and which record stands out. The four-tile logo uses the same language:
+> filled for admitted, hollow for discharged.
 
-It began as a set of coursework scripts for a Patient API assignment. It has since been
-restructured into an installable package with a layered design, strict typing, a 160+ test suite
-and CI, so every business rule from the original brief is now a tested function you can reuse from
-the dashboard, the API, the CLI, or your own code.
+It began as coursework scripts for a Patient API assignment and has been rebuilt as an installable,
+typed, tested package with a layered design, CI and a Docker image. Every rule from the original
+brief is still there, now as a reusable function.
 
 > **Data note:** the repo ships a *fully synthetic* dataset (`data/sample_patients.json`) so you
-> can run everything offline. No real patient data is included anywhere.
+> can run everything offline. No real patient data and no credentials are included anywhere.
 
 ---
 
@@ -30,33 +37,60 @@ the dashboard, the API, the CLI, or your own code.
 | **Analytics** | Highest bill, longest stay, admission summary, per-department rollups (volume, stay length, revenue) |
 | **Resilient client** | Token auth, request timeouts, automatic retry with backoff for gateway errors (built for sleepy free-tier hosts) |
 | **Smart caching** | TTL cache that serves *stale* data if a refresh fails, instead of turning an outage into a 502 |
-| **CLI** | `patientctl` with JSON or table output, a `doctor` configuration check, and proper exit codes |
+| **CLI** | `tessera` with JSON or table output, a `doctor` configuration check, and proper exit codes |
 | **Safe by default** | No credentials in source; `.env` auto-loading; secret scanning in CI and pre-commit; strict CSP on the dashboard |
 | **Quality gates** | `ruff`, `mypy --strict`, `pytest` (99% coverage), GitHub Actions on Python 3.10–3.13 |
 | **Deployable** | Multi-stage, non-root Dockerfile with a health check, plus `docker-compose.yml` |
 
 ---
 
-## 🖥 Dashboard
+## 🖥 Product tour
 
-Open **`http://localhost:8000/`** after starting the server. There is nothing to build: it is plain
-HTML, CSS and JavaScript served by the API itself, with no third-party requests.
+Start the server and open **`http://localhost:8000/`**. There is nothing to build: the dashboard is
+plain HTML, CSS and JavaScript served by the API itself, with no third-party requests.
 
-The centrepiece is the **census**: every patient record is one cell, grouped by department.
-Filled means *admitted*, hollow means *discharged*, a rose ring marks the **highest bill** and a
-rose dot marks the **longest stay**. Click any cell, row or record to open that patient.
+### The census
 
-| Dark theme | Patient details |
+![Tessera dashboard in the light theme](docs/screenshots/dashboard-light.png)
+
+The headline answers the first question a ward lead asks: *how many patients are admitted right now?*
+Below it, every patient is one tile, grouped by department. **Filled** means admitted, **hollow**
+means discharged, a **rose ring** marks the highest bill and a **rose dot** marks the longest stay.
+Under the census, the department ledger compares volume, admissions, average stay and billing, and
+the directory lists every record.
+
+### Filter by department
+
+![Directory filtered to Oncology and sorted by bill](docs/screenshots/department-filter.png)
+
+Select a department in the ledger and the directory narrows to it. Search by name, filter by
+status, sort any column (sorting runs on the server before paging, so it holds across pages).
+
+### Open a patient
+
+![Patient detail drawer](docs/screenshots/patient-drawer.png)
+
+Click a tile or a row to open the record in a drawer: billing breakdown, time admitted, doctor and status.
+Focus moves into the drawer, `Esc` closes it, and focus returns to the tile you came from.
+
+### When nothing matches
+
+![Empty search state](docs/screenshots/empty-state.png)
+
+Empty results explain themselves and offer a way back instead of showing a blank table.
+
+### Dark theme and phones
+
+| Dark theme | Phone width |
 | --- | --- |
-| ![Dark theme](docs/screenshots/dashboard-dark.png) | ![Patient drawer](docs/screenshots/patient-drawer.png) |
+| ![Dark theme](docs/screenshots/dashboard-dark.png) | ![Mobile layout](docs/screenshots/dashboard-mobile.png) |
 
-- **Directory:** search by name, filter by department and status, sort any column, and page through results.
-- **Departments:** select a row to filter the directory; bars show relative patient volume.
-- **Accessible:** full keyboard support, visible focus, labelled controls, focus returns to where you were
-  when the drawer closes, and `prefers-reduced-motion` is respected.
-- **Responsive:** works down to phone width.
-- **Secure:** served under a strict Content-Security-Policy (`script-src 'self'`), and all API text is
-  inserted with `textContent`, never `innerHTML`. Tests enforce both.
+The theme follows your system setting, can be switched in the header, and is remembered. The layout
+works down to phone width with no horizontal scrolling.
+
+- **Accessible:** keyboard support, visible focus, labelled controls, `prefers-reduced-motion` respected.
+- **Secure:** strict Content-Security-Policy (`script-src 'self'`), API text inserted with
+  `textContent` only, never `innerHTML`. Tests enforce both.
 
 ---
 
@@ -67,7 +101,7 @@ flowchart LR
     subgraph Interfaces
         UI["Dashboard<br/>static/"]
         API["FastAPI<br/>api.py"]
-        CLI["patientctl<br/>cli.py"]
+        CLI["tessera<br/>cli.py"]
     end
     subgraph Core
         AN["analytics.py<br/>pure functions"]
@@ -110,15 +144,15 @@ python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
 export PATIENT_API_DATA_FILE=data/sample_patients.json
-patientctl serve            # dashboard at http://127.0.0.1:8000/  ·  API docs at /docs
+tessera serve            # dashboard at http://127.0.0.1:8000/  ·  API docs at /docs
 ```
 
 ### 2. Against the real upstream service
 
 ```bash
 cp .env.example .env        # open it and fill in your credentials
-patientctl doctor           # confirms the setup; secrets are never printed
-patientctl serve
+tessera doctor           # confirms the setup; secrets are never printed
+tessera serve
 ```
 
 `.env` is loaded automatically, is **git-ignored**, and real environment variables take priority over
@@ -177,14 +211,14 @@ GET /patients/9999
 ## 💻 CLI
 
 ```bash
-patientctl doctor
-patientctl summary
-patientctl get 201
-patientctl filter cardiology --format table
-patientctl departments --format table
-patientctl highest-bill
-patientctl longest-stay
-patientctl serve --port 8000 --reload
+tessera doctor
+tessera summary
+tessera get 201
+tessera filter cardiology --format table
+tessera departments --format table
+tessera highest-bill
+tessera longest-stay
+tessera serve --port 8000 --reload
 ```
 
 Exit codes: `0` success · `1` not found / bad input · `2` configuration error.
@@ -211,7 +245,7 @@ Set these in `.env` (copy `.env.example`) or as environment variables.
 ## 🔐 Handling credentials
 
 - Secrets are read only from the environment or a local, git-ignored `.env`. There are none in the repository.
-- `patientctl doctor` reports each secret as *set* or *missing* and never prints a value. Tests enforce this.
+- `tessera doctor` reports each secret as *set* or *missing* and never prints a value. Tests enforce this.
 - `/meta` and every other endpoint expose no credential data. Tests enforce this too.
 - **Gitleaks** runs in CI and as a pre-commit hook, so a secret is caught before it reaches GitHub.
 
@@ -244,10 +278,10 @@ See [SECURITY.md](SECURITY.md) for what to do if a secret is ever committed.
 
 ```
 .
-├── src/patient_api/
+├── src/tessera/
 │   ├── api.py            FastAPI app factory, routes, error mapping, dashboard hosting
 │   ├── analytics.py      Pure business logic (including sorting)
-│   ├── cli.py            patientctl
+│   ├── cli.py            tessera
 │   ├── client.py         Auth + dataset download (retries, timeouts)
 │   ├── repository.py     File / remote / in-memory sources, TTL cache
 │   ├── models.py         Pydantic models
