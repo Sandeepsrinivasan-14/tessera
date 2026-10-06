@@ -1,0 +1,566 @@
+{
+  "data": {
+    "patients": [
+      {
+        "id": 201,
+        "name": "Aarav Khan",
+        "age": 31,
+        "department": "Cardiology",
+        "doctor": "Dr. Ramesh",
+        "status": "Admitted",
+        "daysAdmitted": 12,
+        "bill": {
+          "consultation": 950,
+          "medicine": 1925,
+          "lab": 425
+        }
+      },
+      {
+        "id": 202,
+        "name": "Meera Iyer",
+        "age": 51,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 12,
+        "bill": {
+          "consultation": 1700,
+          "medicine": 2125,
+          "lab": 225
+        }
+      },
+      {
+        "id": 203,
+        "name": "Maria Bose",
+        "age": 36,
+        "department": "Orthopedics",
+        "doctor": "Dr. Prakash",
+        "status": "Discharged",
+        "daysAdmitted": 19,
+        "bill": {
+          "consultation": 1100,
+          "medicine": 2775,
+          "lab": 150
+        }
+      },
+      {
+        "id": 204,
+        "name": "Kavya Patel",
+        "age": 4,
+        "department": "Pediatrics",
+        "doctor": "Dr. Farhan",
+        "status": "Admitted",
+        "daysAdmitted": 7,
+        "bill": {
+          "consultation": 750,
+          "medicine": 350,
+          "lab": 275
+        }
+      },
+      {
+        "id": 205,
+        "name": "Lakshmi Joseph",
+        "age": 30,
+        "department": "Oncology",
+        "doctor": "Dr. Ishita",
+        "status": "Discharged",
+        "daysAdmitted": 17,
+        "bill": {
+          "consultation": 2350,
+          "medicine": 1650,
+          "lab": 1850
+        }
+      },
+      {
+        "id": 206,
+        "name": "Suresh Reddy",
+        "age": 86,
+        "department": "General Medicine",
+        "doctor": "Dr. Sunita",
+        "status": "Discharged",
+        "daysAdmitted": 2,
+        "bill": {
+          "consultation": 850,
+          "medicine": 475,
+          "lab": 300
+        }
+      },
+      {
+        "id": 207,
+        "name": "Priya Das",
+        "age": 26,
+        "department": "General Medicine",
+        "doctor": "Dr. Rajan",
+        "status": "Discharged",
+        "daysAdmitted": 2,
+        "bill": {
+          "consultation": 450,
+          "medicine": 500,
+          "lab": 350
+        }
+      },
+      {
+        "id": 208,
+        "name": "Ananya Joseph",
+        "age": 7,
+        "department": "Pediatrics",
+        "doctor": "Dr. Farhan",
+        "status": "Admitted",
+        "daysAdmitted": 6,
+        "bill": {
+          "consultation": 700,
+          "medicine": 1275,
+          "lab": 250
+        }
+      },
+      {
+        "id": 209,
+        "name": "Maria Rao",
+        "age": 34,
+        "department": "Oncology",
+        "doctor": "Dr. Venkat",
+        "status": "Discharged",
+        "daysAdmitted": 25,
+        "bill": {
+          "consultation": 1600,
+          "medicine": 3750,
+          "lab": 850
+        }
+      },
+      {
+        "id": 210,
+        "name": "Meera Rao",
+        "age": 77,
+        "department": "General Medicine",
+        "doctor": "Dr. Rajan",
+        "status": "Discharged",
+        "daysAdmitted": 6,
+        "bill": {
+          "consultation": 700,
+          "medicine": 625,
+          "lab": 250
+        }
+      },
+      {
+        "id": 211,
+        "name": "Nikhil Gupta",
+        "age": 80,
+        "department": "Neurology",
+        "doctor": "Dr. Kavitha",
+        "status": "Discharged",
+        "daysAdmitted": 12,
+        "bill": {
+          "consultation": 1900,
+          "medicine": 1650,
+          "lab": 600
+        }
+      },
+      {
+        "id": 212,
+        "name": "Maria Khan",
+        "age": 39,
+        "department": "Orthopedics",
+        "doctor": "Dr. Neha",
+        "status": "Discharged",
+        "daysAdmitted": 6,
+        "bill": {
+          "consultation": 1300,
+          "medicine": 775,
+          "lab": 500
+        }
+      },
+      {
+        "id": 213,
+        "name": "Karthik Nair",
+        "age": 55,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 11,
+        "bill": {
+          "consultation": 1150,
+          "medicine": 1550,
+          "lab": 1100
+        }
+      },
+      {
+        "id": 214,
+        "name": "Yuki Verma",
+        "age": 48,
+        "department": "Cardiology",
+        "doctor": "Dr. Anjali",
+        "status": "Discharged",
+        "daysAdmitted": 8,
+        "bill": {
+          "consultation": 800,
+          "medicine": 1275,
+          "lab": 325
+        }
+      },
+      {
+        "id": 215,
+        "name": "Nikhil Sharma",
+        "age": 73,
+        "department": "General Medicine",
+        "doctor": "Dr. Sunita",
+        "status": "Discharged",
+        "daysAdmitted": 5,
+        "bill": {
+          "consultation": 750,
+          "medicine": 200,
+          "lab": 725
+        }
+      },
+      {
+        "id": 216,
+        "name": "David Pillai",
+        "age": 86,
+        "department": "General Medicine",
+        "doctor": "Dr. Rajan",
+        "status": "Discharged",
+        "daysAdmitted": 5,
+        "bill": {
+          "consultation": 600,
+          "medicine": 1000,
+          "lab": 625
+        }
+      },
+      {
+        "id": 217,
+        "name": "Ananya Iyer",
+        "age": 47,
+        "department": "Neurology",
+        "doctor": "Dr. Kavitha",
+        "status": "Discharged",
+        "daysAdmitted": 5,
+        "bill": {
+          "consultation": 1050,
+          "medicine": 775,
+          "lab": 850
+        }
+      },
+      {
+        "id": 218,
+        "name": "Priya Reddy",
+        "age": 27,
+        "department": "Orthopedics",
+        "doctor": "Dr. Prakash",
+        "status": "Discharged",
+        "daysAdmitted": 9,
+        "bill": {
+          "consultation": 800,
+          "medicine": 1400,
+          "lab": 1000
+        }
+      },
+      {
+        "id": 219,
+        "name": "Fatima Pillai",
+        "age": 66,
+        "department": "Neurology",
+        "doctor": "Dr. Kavitha",
+        "status": "Discharged",
+        "daysAdmitted": 5,
+        "bill": {
+          "consultation": 1850,
+          "medicine": 875,
+          "lab": 300
+        }
+      },
+      {
+        "id": 220,
+        "name": "Vikram Das",
+        "age": 70,
+        "department": "Oncology",
+        "doctor": "Dr. Ishita",
+        "status": "Discharged",
+        "daysAdmitted": 29,
+        "bill": {
+          "consultation": 2200,
+          "medicine": 2575,
+          "lab": 2950
+        }
+      },
+      {
+        "id": 221,
+        "name": "Priya Rao",
+        "age": 31,
+        "department": "Oncology",
+        "doctor": "Dr. Venkat",
+        "status": "Admitted",
+        "daysAdmitted": 19,
+        "bill": {
+          "consultation": 2100,
+          "medicine": 1950,
+          "lab": 875
+        }
+      },
+      {
+        "id": 222,
+        "name": "Karthik Nair",
+        "age": 24,
+        "department": "Oncology",
+        "doctor": "Dr. Venkat",
+        "status": "Admitted",
+        "daysAdmitted": 12,
+        "bill": {
+          "consultation": 1250,
+          "medicine": 1250,
+          "lab": 375
+        }
+      },
+      {
+        "id": 223,
+        "name": "Fatima Gupta",
+        "age": 41,
+        "department": "Oncology",
+        "doctor": "Dr. Venkat",
+        "status": "Discharged",
+        "daysAdmitted": 12,
+        "bill": {
+          "consultation": 2100,
+          "medicine": 2025,
+          "lab": 1650
+        }
+      },
+      {
+        "id": 224,
+        "name": "Kavya Gupta",
+        "age": 54,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 15,
+        "bill": {
+          "consultation": 1550,
+          "medicine": 1325,
+          "lab": 1500
+        }
+      },
+      {
+        "id": 225,
+        "name": "Divya Nair",
+        "age": 2,
+        "department": "Pediatrics",
+        "doctor": "Dr. Farhan",
+        "status": "Discharged",
+        "daysAdmitted": 4,
+        "bill": {
+          "consultation": 550,
+          "medicine": 575,
+          "lab": 300
+        }
+      },
+      {
+        "id": 226,
+        "name": "Rohan Bose",
+        "age": 52,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 11,
+        "bill": {
+          "consultation": 1250,
+          "medicine": 425,
+          "lab": 850
+        }
+      },
+      {
+        "id": 227,
+        "name": "Maria Iyer",
+        "age": 27,
+        "department": "Oncology",
+        "doctor": "Dr. Venkat",
+        "status": "Discharged",
+        "daysAdmitted": 8,
+        "bill": {
+          "consultation": 1550,
+          "medicine": 450,
+          "lab": 800
+        }
+      },
+      {
+        "id": 228,
+        "name": "Suresh Nair",
+        "age": 5,
+        "department": "Pediatrics",
+        "doctor": "Dr. Meenakshi",
+        "status": "Discharged",
+        "daysAdmitted": 4,
+        "bill": {
+          "consultation": 800,
+          "medicine": 600,
+          "lab": 775
+        }
+      },
+      {
+        "id": 229,
+        "name": "Maria Shah",
+        "age": 8,
+        "department": "Pediatrics",
+        "doctor": "Dr. Meenakshi",
+        "status": "Admitted",
+        "daysAdmitted": 3,
+        "bill": {
+          "consultation": 650,
+          "medicine": 225,
+          "lab": 600
+        }
+      },
+      {
+        "id": 230,
+        "name": "Nikhil Nair",
+        "age": 71,
+        "department": "General Medicine",
+        "doctor": "Dr. Rajan",
+        "status": "Discharged",
+        "daysAdmitted": 1,
+        "bill": {
+          "consultation": 800,
+          "medicine": 525,
+          "lab": 350
+        }
+      },
+      {
+        "id": 231,
+        "name": "David Reddy",
+        "age": 85,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 3,
+        "bill": {
+          "consultation": 1000,
+          "medicine": 725,
+          "lab": 325
+        }
+      },
+      {
+        "id": 232,
+        "name": "Priya Nair",
+        "age": 11,
+        "department": "Pediatrics",
+        "doctor": "Dr. Meenakshi",
+        "status": "Discharged",
+        "daysAdmitted": 1,
+        "bill": {
+          "consultation": 950,
+          "medicine": 425,
+          "lab": 350
+        }
+      },
+      {
+        "id": 233,
+        "name": "Nikhil Rao",
+        "age": 37,
+        "department": "Orthopedics",
+        "doctor": "Dr. Neha",
+        "status": "Discharged",
+        "daysAdmitted": 10,
+        "bill": {
+          "consultation": 1150,
+          "medicine": 1650,
+          "lab": 650
+        }
+      },
+      {
+        "id": 234,
+        "name": "Yuki Sharma",
+        "age": 53,
+        "department": "Cardiology",
+        "doctor": "Dr. Ramesh",
+        "status": "Discharged",
+        "daysAdmitted": 2,
+        "bill": {
+          "consultation": 1600,
+          "medicine": 400,
+          "lab": 250
+        }
+      },
+      {
+        "id": 235,
+        "name": "Priya Joseph",
+        "age": 80,
+        "department": "Orthopedics",
+        "doctor": "Dr. Neha",
+        "status": "Admitted",
+        "daysAdmitted": 4,
+        "bill": {
+          "consultation": 1150,
+          "medicine": 200,
+          "lab": 675
+        }
+      },
+      {
+        "id": 236,
+        "name": "Divya Menon",
+        "age": 83,
+        "department": "Oncology",
+        "doctor": "Dr. Ishita",
+        "status": "Admitted",
+        "daysAdmitted": 14,
+        "bill": {
+          "consultation": 1350,
+          "medicine": 1950,
+          "lab": 625
+        }
+      },
+      {
+        "id": 237,
+        "name": "Vikram Patel",
+        "age": 62,
+        "department": "Orthopedics",
+        "doctor": "Dr. Prakash",
+        "status": "Discharged",
+        "daysAdmitted": 11,
+        "bill": {
+          "consultation": 1100,
+          "medicine": 1800,
+          "lab": 925
+        }
+      },
+      {
+        "id": 238,
+        "name": "Kavya Khan",
+        "age": 29,
+        "department": "Orthopedics",
+        "doctor": "Dr. Prakash",
+        "status": "Admitted",
+        "daysAdmitted": 3,
+        "bill": {
+          "consultation": 900,
+          "medicine": 700,
+          "lab": 350
+        }
+      },
+      {
+        "id": 239,
+        "name": "Maria Bose",
+        "age": 52,
+        "department": "Neurology",
+        "doctor": "Dr. Subramanian",
+        "status": "Admitted",
+        "daysAdmitted": 14,
+        "bill": {
+          "consultation": 1100,
+          "medicine": 1925,
+          "lab": 250
+        }
+      },
+      {
+        "id": 240,
+        "name": "Rohan Bose",
+        "age": 59,
+        "department": "Orthopedics",
+        "doctor": "Dr. Prakash",
+        "status": "Admitted",
+        "daysAdmitted": 20,
+        "bill": {
+          "consultation": 1250,
+          "medicine": 450,
+          "lab": 1275
+        }
+      }
+    ]
+  }
+}
