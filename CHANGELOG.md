@@ -27,7 +27,7 @@ service.
 - Offline mode and a reproducible synthetic dataset.
 - 166 tests (99% coverage), `ruff`, `mypy --strict`, GitHub Actions (Python 3.10–3.13 + Docker smoke test).
 - Multi-stage non-root Dockerfile, `docker-compose.yml`, `Makefile`.
-- README, architecture and operations docs, contributing guide, security policy.
+- README with product tour, architecture and operations docs, contributing guide, security policy, and a Codespaces devcontainer.
 
 ### Changed
 - Project, package and CLI renamed to Tessera (`tessera` command, `tessera-census` on PyPI-style metadata). `PATIENT_API_*` environment variables are unchanged.

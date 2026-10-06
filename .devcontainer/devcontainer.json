@@ -1,0 +1,9 @@
+{
+  "name": "Tessera",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install -e '.[dev]'",
+  "postStartCommand": "nohup env PATIENT_API_DATA_FILE=data/sample_patients.json tessera serve --host 0.0.0.0 --port 8000 > /tmp/tessera.log 2>&1 &",
+  "forwardPorts": [8000],
+  "portsAttributes": { "8000": { "label": "Tessera dashboard", "onAutoForward": "openBrowser" } },
+  "containerEnv": { "PATIENT_API_DATA_FILE": "data/sample_patients.json" }
+}
