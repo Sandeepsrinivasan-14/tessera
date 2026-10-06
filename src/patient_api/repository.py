@@ -18,11 +18,16 @@ from .models import Patient
 class PatientRepository(Protocol):
     """Anything that can list all patients."""
 
+    #: Short label for where the data comes from: ``"file"``, ``"remote"`` or ``"memory"``.
+    source: str
+
     def all(self) -> list[Patient]: ...
 
 
 class InMemoryRepository:
     """Holds a fixed list of patients. Handy for tests and demos."""
+
+    source = "memory"
 
     def __init__(self, patients: list[Patient]) -> None:
         self._patients = list(patients)
@@ -37,6 +42,8 @@ class FileRepository:
     Accepts either a bare list of patients or the upstream envelope
     ``{"data": {"patients": [...]}}``.
     """
+
+    source = "file"
 
     def __init__(self, path: Path) -> None:
         self._path = Path(path)
@@ -58,6 +65,8 @@ class RemoteRepository:
     Thread-safe, and serves stale data if a refresh fails (a cold-starting free-tier
     server should not turn a working API into a 502).
     """
+
+    source = "remote"
 
     def __init__(
         self,

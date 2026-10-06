@@ -1,12 +1,14 @@
 """Runtime configuration, read from environment variables.
 
 Credentials are **never** stored in source. Copy ``.env.example`` to ``.env`` (which is
-git-ignored) or export the variables in your shell.
+git-ignored) or export the variables in your shell. Real environment variables always take
+priority over values in ``.env``.
 """
 
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -14,6 +16,38 @@ from .exceptions import ConfigurationError
 
 DEFAULT_BASE_URL = "https://t4e-testserver.onrender.com/api"
 DEFAULT_SAMPLE_FILE = Path(__file__).resolve().parents[2] / "data" / "sample_patients.json"
+DEFAULT_DOTENV = Path(".env")
+
+_ENV_KEY = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+
+
+def read_dotenv(path: Path) -> dict[str, str]:
+    """Parse a minimal ``.env`` file (``KEY=value``, optional quotes, ``#`` comments).
+
+    A missing or unreadable file simply yields no values. Nothing is ever logged or echoed.
+    """
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+    values: dict[str, str] = {}
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[len("export ") :].lstrip()
+        key, sep, value = line.partition("=")
+        key = key.strip()
+        if not sep or not _ENV_KEY.fullmatch(key):
+            continue
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+            value = value[1:-1]
+        else:
+            value = value.split(" #", 1)[0].rstrip()
+        values[key] = value
+    return values
 
 
 @dataclass(frozen=True)
@@ -34,9 +68,20 @@ class Settings:
     data_file: Path | None = None
 
     @classmethod
-    def from_env(cls, env: dict[str, str] | None = None) -> Settings:
-        """Build settings from ``PATIENT_API_*`` environment variables."""
-        source = os.environ if env is None else env
+    def from_env(
+        cls, env: dict[str, str] | None = None, dotenv: Path | None = DEFAULT_DOTENV
+    ) -> Settings:
+        """Build settings from ``PATIENT_API_*`` variables.
+
+        With no explicit ``env``, values come from the process environment, falling back to
+        a ``.env`` file in the working directory (pass ``dotenv=None`` to disable that).
+        """
+        if env is not None:
+            source: dict[str, str] | os._Environ[str] = env
+        elif dotenv is not None:
+            source = {**read_dotenv(dotenv), **os.environ}
+        else:
+            source = os.environ
 
         def get(name: str) -> str | None:
             value = source.get(f"PATIENT_API_{name}")
@@ -56,6 +101,15 @@ class Settings:
             )
         except ValueError as exc:
             raise ConfigurationError(f"invalid numeric PATIENT_API_* value: {exc}") from exc
+
+    @property
+    def mode(self) -> str:
+        """``"offline"`` when reading a local file, otherwise ``"remote"``."""
+        return "offline" if self.data_file is not None else "remote"
+
+    @property
+    def has_credentials(self) -> bool:
+        return bool(self.student_id and self.password)
 
     def require_credentials(self) -> None:
         """Raise :class:`ConfigurationError` unless remote credentials are present."""

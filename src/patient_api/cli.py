@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from . import __version__, analytics
-from .config import Settings
+from .config import DEFAULT_DOTENV, Settings
 from .exceptions import ConfigurationError, PatientAPIError
 from .repository import PatientRepository, build_repository
 from .validation import parse_patient_id, require_department
@@ -72,6 +72,7 @@ def build_parser() -> argparse.ArgumentParser:
     command("highest-bill", "patient with the highest total bill")
     command("longest-stay", "patient admitted the longest")
     command("departments", "per-department statistics")
+    command("doctor", "check configuration (never prints secrets)")
     command("get", "fetch one patient by id").add_argument("patient_id", help="numeric patient id")
     command("filter", "list patients in a department").add_argument(
         "department", help="department name (case-insensitive)"
@@ -125,6 +126,44 @@ def _run_query(args: argparse.Namespace, repo: PatientRepository) -> None:
         )
 
 
+def _doctor(settings: Settings) -> int:
+    """Report how the app is configured. Secrets are reported as set/missing, never shown."""
+
+    def status(present: bool) -> str:
+        return "set" if present else "missing"
+
+    rows = [("mode", settings.mode)]
+    if settings.data_file is not None:
+        exists = settings.data_file.is_file()
+        rows.append(("data file", f"{settings.data_file} ({'found' if exists else 'NOT FOUND'})"))
+        ok = exists
+    else:
+        rows += [
+            ("base url", settings.base_url),
+            ("dataset set", settings.dataset_set),
+            ("student id", status(bool(settings.student_id))),
+            ("password", status(bool(settings.password))),
+        ]
+        ok = settings.has_credentials
+    rows.append((".env file", "found" if DEFAULT_DOTENV.is_file() else "not found"))
+
+    width = max(len(label) for label, _ in rows)
+    for label, value in rows:
+        print(f"{label.ljust(width)}  {value}")
+    if ok:
+        print("\nConfiguration looks good.")
+        return 0
+    if settings.data_file is not None:
+        print("\nThe data file does not exist. Check PATIENT_API_DATA_FILE.", file=sys.stderr)
+    else:
+        print(
+            "\nAdd PATIENT_API_STUDENT_ID and PATIENT_API_PASSWORD to .env "
+            "(copy .env.example), or set PATIENT_API_DATA_FILE to run offline.",
+            file=sys.stderr,
+        )
+    return 2
+
+
 def _serve(args: argparse.Namespace, settings: Settings) -> None:
     import uvicorn  # imported lazily: only the server needs it
 
@@ -150,6 +189,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         settings = Settings.from_env()
         if args.data_file is not None:
             settings = Settings(**{**settings.__dict__, "data_file": args.data_file})
+        if args.command == "doctor":
+            return _doctor(settings)
         if args.command == "serve":
             _serve(args, settings)
             return 0

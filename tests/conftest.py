@@ -39,6 +39,12 @@ def make_patient(
     )
 
 
+@pytest.fixture(autouse=True)
+def _isolated_cwd(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Run every test from an empty directory so a developer's real ``.env`` is never read."""
+    monkeypatch.chdir(tmp_path)
+
+
 @pytest.fixture
 def patients() -> list[Patient]:
     """A small, hand-checkable dataset.
