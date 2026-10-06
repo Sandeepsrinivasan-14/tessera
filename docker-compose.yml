@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    # Offline demo mode is the image default. For remote mode, copy .env.example to .env,
+    # fill in the credentials, and clear PATIENT_API_DATA_FILE below.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PATIENT_API_DATA_FILE: ${PATIENT_API_DATA_FILE-/app/data/sample_patients.json}
+    restart: unless-stopped
