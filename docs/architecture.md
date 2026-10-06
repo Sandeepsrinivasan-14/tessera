@@ -4,7 +4,7 @@
 
 | Layer | Module(s) | Responsibility | Knows about |
 | --- | --- | --- | --- |
-| Interface | `api.py`, `cli.py` | Parse requests/arguments, map errors to status codes / exit codes | everything below |
+| Interface | `api.py`, `cli.py`, `static/` | Parse requests/arguments, map errors to status codes / exit codes, render the dashboard | everything below |
 | Core | `analytics.py`, `validation.py`, `models.py` | Business rules, input rules, data shapes | only itself |
 | Data access | `repository.py`, `client.py` | Where patients come from; auth, retries, caching | `config.py` |
 | Cross-cutting | `config.py`, `exceptions.py` | Settings, error taxonomy | nothing |
@@ -22,6 +22,23 @@ analytics can be tested with plain Python lists.
 4. `analytics.highest_bill()` computes the result with no side effects.
 5. Pydantic serialises the response using the camelCase aliases.
 6. Middleware logs method, path, status and latency.
+
+## Dashboard
+
+The dashboard (`src/patient_api/static/`) is a thin client of the public API; it has no private
+endpoints. It fetches `/meta`, `/patients/admission/summary`, `/patients/highest-bill`,
+`/patients/longest-stay`, `/analytics/departments` and `/patients`, so anything it can show, an
+API consumer can also get.
+
+- **No build step.** Plain `index.html`, `styles.css`, `app.js` and `theme.js`, shipped as package data.
+- **Strict CSP.** The page is served with `script-src 'self'; style-src 'self'; frame-ancestors 'none'`.
+  That is why there are no inline scripts, styles or event handlers, and why dynamic styling goes
+  through the CSSOM (`style.setProperty`) rather than `style` attributes.
+- **No markup injection.** API text is only ever inserted with `textContent` / text nodes.
+- **Tests enforce both rules** (`tests/test_ui_and_meta.py`): no inline script/style, no
+  third-party URLs, and no `innerHTML`, `eval` or `document.write` anywhere in `app.js`.
+- **One data language.** Filled cell = admitted, hollow = discharged, rose ring = highest bill,
+  rose dot = longest stay. The same marks appear in the census, legend, notable records and drawer.
 
 ## Error model
 

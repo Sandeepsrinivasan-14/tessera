@@ -21,6 +21,13 @@ make check            # ruff + mypy --strict + pytest, the same as CI
   dataset in `data/`.
 - Code style is enforced by `ruff`; types by `mypy --strict`. Run `make format` to auto-fix.
 
+## Working on the dashboard
+
+The UI is plain files in `src/patient_api/static/`; there is nothing to build. Run `make serve` and
+open <http://127.0.0.1:8000/>. Keep to the rules the tests enforce: no inline scripts or styles, no
+third-party requests, and never `innerHTML` (use `textContent`). Check light and dark themes, keyboard
+use, and a narrow (phone-width) window before opening a PR.
+
 ## Adding an endpoint
 
 1. Add a pure function and response model (`analytics.py`, `models.py`) with unit tests.

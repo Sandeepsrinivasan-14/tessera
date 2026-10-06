@@ -6,11 +6,21 @@
 | --- | --- |
 | Local, offline | `PATIENT_API_DATA_FILE=data/sample_patients.json patientctl serve` |
 | Local, hot reload | `make serve` |
-| Remote upstream | export `PATIENT_API_STUDENT_ID` / `PATIENT_API_PASSWORD`, then `patientctl serve` |
+| Remote upstream | `cp .env.example .env`, fill it in, run `patientctl doctor`, then `patientctl serve` |
+| Dashboard | open `http://127.0.0.1:8000/` once the server is running |
 | Container | `docker compose up --build` |
 | Production-style | `uvicorn "patient_api.api:create_app" --factory --host 0.0.0.0 --port 8000 --workers 2` |
 
 With multiple workers each process keeps its own cache, which is fine for read-only data.
+
+## Checking your configuration
+
+`patientctl doctor` shows the mode (offline or remote), the base URL, whether the credentials are
+*set* or *missing*, and whether a `.env` file was found. It never prints a secret value, so its
+output is safe to paste into an issue. It exits with `2` when something required is missing.
+
+Configuration is read from real environment variables first, then from a `.env` file in the
+directory you run the command from.
 
 ## Health and observability
 
@@ -33,7 +43,8 @@ of seconds.
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| 503 `missing environment variable(s)` | No credentials and no data file | Set credentials or `PATIENT_API_DATA_FILE` |
+| 503 `missing environment variable(s)` | No credentials and no data file | Fill in `.env` (run `patientctl doctor`) or set `PATIENT_API_DATA_FILE` |
+| Dashboard shows "Patient records are unavailable." | The API returned an error; the banner above it says why | Follow the message, then choose **Try again** |
 | 502 `token request failed with HTTP 401` | Wrong credentials / set | Check `PATIENT_API_STUDENT_ID`, `_PASSWORD`, `_SET` |
 | 502 `could not reach ...` | Upstream asleep or down | Retry; increase timeout and retries |
 | 400 on `/patients/filter` | `department` missing or blank | Pass `?department=Cardiology` |

@@ -11,14 +11,21 @@ service.
 
 ### Added
 - Installable `patient_api` package (`src/` layout, typed, `py.typed`).
-- FastAPI service with eight documented endpoints, request-ID/timing headers and a uniform
-  `{"message": ...}` error shape.
+- Web dashboard served at `/`: patient census, department ledger, searchable and sortable
+  directory, patient drawer, light and dark themes. Plain HTML/CSS/JS, no build step, no
+  third-party requests, strict Content-Security-Policy.
+- FastAPI service with nine documented endpoints (including `/meta`), request-ID/timing headers
+  and a uniform `{"message": ...}` error shape.
+- Server-side `sort` and `order` on `/patients`, applied before pagination.
+- `.env` auto-loading (real environment variables win) and `patientctl doctor`, which reports
+  configuration without ever printing a secret.
+- Gitleaks secret scanning in CI and as a pre-commit hook.
 - Pure analytics layer: highest bill, longest stay, admission summary, department rollups.
 - Resilient upstream client with timeouts and retry/backoff, plus a TTL cache that serves stale
   data when a refresh fails.
 - `patientctl` CLI (JSON and table output, meaningful exit codes).
 - Offline mode and a reproducible synthetic dataset.
-- 122 tests, `ruff`, `mypy --strict`, GitHub Actions (Python 3.10–3.13 + Docker smoke test).
+- 166 tests (99% coverage), `ruff`, `mypy --strict`, GitHub Actions (Python 3.10–3.13 + Docker smoke test).
 - Multi-stage non-root Dockerfile, `docker-compose.yml`, `Makefile`.
 - README, architecture and operations docs, contributing guide, security policy.
 
